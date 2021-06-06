@@ -9,32 +9,32 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 11)
-#set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# QtCreator supports the following variables for Android, which are identical to qmake Android variables.
-# Check https://doc.qt.io/qt/deployment-android.html for more information.
-# They need to be set before the find_package( ...) calls below.
-
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/libs/)
-
-if(ANDROID)
-    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    if (ANDROID_ABI STREQUAL "armeabi-v7a")
-        set(ANDROID_EXTRA_LIBS
-            ${CMAKE_CURRENT_SOURCE_DIR}/path/to/libcrypto.so
-            ${CMAKE_CURRENT_SOURCE_DIR}/path/to/libssl.so)
-    endif()
-endif()
-
-set(FFMPEG_PREFIX_DIR "/usr/local/Cellar/ffmpeg/4.3.1_8")
-
-
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets LinguistTools REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets LinguistTools REQUIRED)
 
+#平台判断
+if(WIN32)
+    message("Now is windows")
+elseif(APPLE)
+    message("Now is Apple systens.")
+    set(FFMPEG_PREFIX_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs")
+elseif(ANDROID)
+    message("Now is ANDROID systens.")
+elseif(UNIX)
+    message("Now is UNIX systens.")
+endif()
 
-include_directories(${FFMPEG_PREFIX_DIR}/include/)
-link_directories(${FFMPEG_PREFIX_DIR}/lib/)
+
+message("FFMPEG_PREFIX_DIR=${FFMPEG_PREFIX_DIR}")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/output/)
+set(FFMPEG_INCLUDE_DIRS "${FFMPEG_PREFIX_DIR}/include/")
+set(FFMPEG_LIB_DIRS "${FFMPEG_PREFIX_DIR}/lib/")
+
+include_directories(${FFMPEG_INCLUDE_DIRS})
+link_directories(${FFMPEG_LIB_DIRS})
 
 set(TS_FILES QTFFPlayer_zh_CN.ts)
 
@@ -66,6 +66,8 @@ else()
 
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
+
+
 
 target_link_libraries(QTFFPlayer PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets

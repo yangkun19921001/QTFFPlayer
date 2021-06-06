@@ -11,8 +11,9 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    printf("Ffmpeg cmkae build = \n %s",avcodec_configuration());
+
     ui->setupUi(this);
+      printf("Ffmpeg cmkae build = \n %s",avcodec_configuration());
 }
 
 MainWindow::~MainWindow()
