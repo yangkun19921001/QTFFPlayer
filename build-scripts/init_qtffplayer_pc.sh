@@ -17,9 +17,6 @@ fi
 
 TARGET=$1
 
-if [ -z "$str" ]; then
-	TARGET=“mac”
-fi
 
 if [ $TARGET == “mac” ]
 then
