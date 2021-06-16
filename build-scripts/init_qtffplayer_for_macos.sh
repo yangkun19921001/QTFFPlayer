@@ -17,15 +17,15 @@ cd ../source/ffmpeg
 echo $PWD
 
 
-# if [ ! -d "ffmpeg-4.4" ]; then  
-#   wget https://ffmpeg.org/releases/ffmpeg-4.4.tar.bz2
-#   tar -zxvf ffmpeg-4.4.tar.bz2
-# fi
+if [ ! -d "ffmpeg-4.4" ]; then  
+  wget https://ffmpeg.org/releases/ffmpeg-4.4.tar.bz2
+  tar -zxvf ffmpeg-4.4.tar.bz2
+fi
 
 cd ffmpeg-4.4
 echo --->$(pwd)
+
 FFMPEG_PREFIX=$(pwd)/../../../libs/
-echo --->$FFMPEG_PREFIX
 
 rm -rf $FFMPEG_PREFIX
 
