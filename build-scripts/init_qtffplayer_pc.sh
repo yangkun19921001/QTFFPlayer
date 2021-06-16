@@ -5,7 +5,7 @@
 set -e
 
 FFMPEG_VERSION=4.4
-FFMPEG_PREFIX=$(pwd)/../../../libs/
+FFMPEG_PREFIX=$(pwd)/../libs/
 
 
 if [ ! -d "../source" ]; then
@@ -23,7 +23,7 @@ then
   echo "mac"
   chmod +x init_library_for_macos.sh
   ./init_library_for_macos.sh
-elif [ $1 == “ubuntu” ]
+elif [ $TARGET == “ubuntu” ]
 then
   echo "ubuntu"
   chmod +x init_library_for_ubuntu.sh
@@ -43,10 +43,8 @@ if [ ! -d "ffmpeg-4.4" ]; then
   tar -zxvf ffmpeg-4.4.tar.bz2
 fi
 
-cd ffmpeg-4.4
+cd ffmpeg-$FFMPEG_VERSION
 echo --->$(pwd)
-
-FFMPEG_PREFIX=$(pwd)/../../../libs/
 
 rm -rf $FFMPEG_PREFIX
 
