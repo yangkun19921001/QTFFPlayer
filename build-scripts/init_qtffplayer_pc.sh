@@ -18,12 +18,12 @@ fi
 TARGET=$1
 
 
-if [ $TARGET == “mac” ]
+if [ $TARGET == "mac" ]
 then
   echo "mac"
   chmod +x init_library_for_macos.sh
   ./init_library_for_macos.sh
-elif [ $TARGET == “ubuntu” ]
+elif [ $TARGET == "ubuntu" ]
 then
   echo "ubuntu"
   chmod +x init_library_for_ubuntu.sh
@@ -44,7 +44,7 @@ if [ ! -d "ffmpeg-4.4" ]; then
 fi
 
 cd ffmpeg-$FFMPEG_VERSION
-echo --->$(pwd)
+echo "--->$(pwd)"
 
 rm -rf $FFMPEG_PREFIX
 
