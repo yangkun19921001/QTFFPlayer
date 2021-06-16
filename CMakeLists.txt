@@ -41,11 +41,11 @@ link_directories(${FFMPEG_LIB_DIRS})
 set(TS_FILES QTFFPlayer_zh_CN.ts)
 
 set(PROJECT_SOURCES
-       main.cpp
-       mainwindow.cpp
-       mainwindow.h
-       mainwindow.ui
-        ${TS_FILES}
+       src/main.cpp
+       src/mainwindow.cpp
+       src/mainwindow.h
+       src/mainwindow.ui
+       ${TS_FILES}
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
