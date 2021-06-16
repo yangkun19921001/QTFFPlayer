@@ -20,13 +20,15 @@ if(WIN32)
     message("Now is windows")
 elseif(APPLE)
     message("Now is Apple systens.")
-    set(FFMPEG_PREFIX_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs")
 elseif(ANDROID)
     message("Now is ANDROID systens.")
 elseif(UNIX)
     message("Now is UNIX systens.")
 endif()
 
+set(FFMPEG_PREFIX_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs")
+message("CMAKE_HOST_SYSTEM_NAME--->${CMAKE_HOST_SYSTEM_NAME}")
+message("CMAKE_SYSTEM_NAME--->${CMAKE_SYSTEM_NAME}")
 
 message("FFMPEG_PREFIX_DIR=${FFMPEG_PREFIX_DIR}")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/output/)
@@ -72,7 +74,7 @@ endif()
 target_link_libraries(QTFFPlayer PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     #FFmpeg 支持
-    avcodec avdevice avfilter avformat avutil swscale
+    avcodec avdevice avfilter avformat avutil swscale swresample
     )
 
 set_target_properties(QTFFPlayer PROPERTIES
