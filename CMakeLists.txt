@@ -11,21 +11,23 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets LinguistTools REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets LinguistTools REQUIRED)
-
+set(CMAKE_PREFIX_PATH "/Users/devyk/Data/qt/install/5/5.14.2/5.14.2/clang_64/lib/cmake")
+set(QT_VERSION_MAJOR 5)
+set(REQUIRED_LIBS Core Gui Widgets Multimedia OpenGL)
+set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Multimedia Qt5::OpenGL)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 #平台判断
-if(WIN32)
+if (WIN32)
     message("Now is windows")
-elseif(APPLE)
+elseif (APPLE)
     message("Now is Apple systens.")
-elseif(ANDROID)
+elseif (ANDROID)
     message("Now is ANDROID systens.")
-elseif(UNIX)
+elseif (UNIX)
     message("Now is UNIX systens.")
-endif()
+endif ()
 
+set(TS_FILES QTFFPlayer_zh_CN.ts)
 set(FFMPEG_PREFIX_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs")
 message("CMAKE_HOST_SYSTEM_NAME--->${CMAKE_HOST_SYSTEM_NAME}")
 message("CMAKE_SYSTEM_NAME--->${CMAKE_SYSTEM_NAME}")
@@ -35,54 +37,55 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/output/)
 set(FFMPEG_INCLUDE_DIRS "${FFMPEG_PREFIX_DIR}/include/")
 set(FFMPEG_LIB_DIRS "${FFMPEG_PREFIX_DIR}/lib/")
 
+set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(BASE_DIR ${SRC_DIR}/base)
+set(DECODE_DIR ${SRC_DIR}/decode)
+set(DEMUX_DIR ${SRC_DIR}/demux)
+set(RESAMPLE_DIR ${SRC_DIR}/resample)
+set(PROXY_DIR ${SRC_DIR}/proxy)
+set(WIDGET_DIR ${SRC_DIR}/widget)
+set(UTILS_DIR ${SRC_DIR}/utils)
+
+include_directories(${BASE_DIR})
+include_directories(${DECODE_DIR})
+include_directories(${DEMUX_DIR})
+include_directories(${RESAMPLE_DIR})
+include_directories(${PROXY_DIR})
+include_directories(${WIDGET_DIR})
+include_directories(${UTILS_DIR})
 include_directories(${FFMPEG_INCLUDE_DIRS})
+
 link_directories(${FFMPEG_LIB_DIRS})
 
-set(TS_FILES QTFFPlayer_zh_CN.ts)
 
 set(PROJECT_SOURCES
-       src/main.cpp
-       src/mainwindow.cpp
-       src/mainwindow.h
-       src/mainwindow.ui
-       ${TS_FILES}
-)
-
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(QTFFPlayer
-        MANUAL_FINALIZATION
+        src/main.cpp
+        src/mainwindow.cpp
+        src/mainwindow.h
+        src/mainwindow.ui
+        ${TS_FILES}
+        src/base/IThread.cpp
+        src/base/IObserver.cpp
+        src/utils/log4z.cpp
+        )
+add_library(QTFFPlayer SHARED
         ${PROJECT_SOURCES}
-    )
-
-    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
-else()
-    if(ANDROID)
-        add_library(QTFFPlayer SHARED
-            ${PROJECT_SOURCES}
         )
-    else()
-        add_executable(QTFFPlayer
-            ${PROJECT_SOURCES}
+add_executable(QTFFPlayer_GUI
+        ${PROJECT_SOURCES}
         )
-    endif()
-
-    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
-endif()
-
 
 
 target_link_libraries(QTFFPlayer PRIVATE
-    Qt${QT_VERSION_MAJOR}::Widgets
-    #FFmpeg 支持
-    avcodec avdevice avfilter avformat avutil swscale swresample
-    )
+        Qt${QT_VERSION_MAJOR}::Widgets
+        #FFmpeg 支持
+        avcodec avdevice avfilter avformat avutil swscale swresample
+        )
 
-set_target_properties(QTFFPlayer PROPERTIES
-    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-)
+target_link_libraries(QTFFPlayer_GUI PRIVATE
+        Qt${QT_VERSION_MAJOR}::Widgets
+        #FFmpeg 支持
+        avcodec avdevice avfilter avformat avutil swscale swresample
+        )
 
-if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(QTFFPlayer)
-endif()
+

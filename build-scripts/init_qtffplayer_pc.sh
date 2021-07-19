@@ -5,7 +5,8 @@
 set -e
 
 FFMPEG_VERSION=4.4
-FFMPEG_PREFIX=$(pwd)/../libs/
+
+FFMPEG_PREFIX=$2
 
 
 if [ ! -d "../source" ]; then
@@ -38,7 +39,7 @@ cd ../source/ffmpeg
 echo $PWD
 
 
-if [ ! -d "ffmpeg-4.4" ]; then  
+if [ ! -d "ffmpeg-4.4" ]; then
   wget https://ffmpeg.org/releases/ffmpeg-4.4.tar.bz2
   tar -zxvf ffmpeg-4.4.tar.bz2
 fi
@@ -46,7 +47,7 @@ fi
 cd ffmpeg-$FFMPEG_VERSION
 echo "--->$(pwd)"
 
-rm -rf $FFMPEG_PREFIX
+sudo rm -rf $FFMPEG_PREFIX
 
 
 ./configure \
